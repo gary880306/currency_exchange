@@ -33,8 +33,8 @@ public class ExchangeRateScraperTest {
                 // 爬取貨幣名稱
                 String currencyName = row.select("td.currency").text();
 
-                // 检查货币名称是否有效，并且确保不重复处理
-                if (!currencyName.isEmpty() && !currencyName.equals("美金 (USD)")) { // 這裡添加您要排除的重复货币名称
+                // 檢查貨幣是否有效
+                if (!currencyName.isEmpty() && !currencyName.equals("美金 (USD)")) {
                     // 爬取資料，並檢查是否為 null
                     Element cashBuyRateElement = row.select("td[data-table=本行現金買入]").first();
                     String cashBuyRate = cashBuyRateElement != null ? cashBuyRateElement.text() : "無資料";

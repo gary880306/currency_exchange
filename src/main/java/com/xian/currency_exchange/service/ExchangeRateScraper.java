@@ -12,7 +12,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.sql.SQLOutput;
+import java.math.RoundingMode;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.regex.Matcher;
@@ -34,19 +34,18 @@ public class ExchangeRateScraper {
             for (Element row : currencyRows) {
                 String currencyName = row.select("td.currency").text();
                 if (!currencyName.isEmpty()) {
-                    String currencyCode = extractCurrencyCode(currencyName); // 提取貨幣代碼
+                    String targetCode = extractCurrencyCode(currencyName); // 提取貨幣代碼
 
                     BigDecimal sightBuyRate = parseRate(extractRateText(row, "本行即期買入"));
                     BigDecimal sightSellRate = parseRate(extractRateText(row, "本行即期賣出"));
-
                     // 檢查是否已存在該貨幣代碼的紀錄
-                    ExchangeRate exchangeRate = exchangeRateRepository.findByCurrencyCode(currencyCode)
+                    ExchangeRate exchangeRate = exchangeRateRepository.findByTargetCode(targetCode)
                             .orElse(new ExchangeRate());  // 如果不存在則創建新實體
 
-                    exchangeRate.setCurrencyCode(currencyCode);
+                    exchangeRate.setTargetCode(targetCode);
                     exchangeRate.setBaseCurrency("TWD");
-                    exchangeRate.setBuyRate(sightBuyRate);
-                    exchangeRate.setSellRate(sightSellRate);
+                    exchangeRate.setBuyRate(sightBuyRate.setScale(4, RoundingMode.DOWN).stripTrailingZeros());
+                    exchangeRate.setSellRate(sightSellRate.setScale(4, RoundingMode.DOWN).stripTrailingZeros());
                     exchangeRate.setLastUpdated(Timestamp.from(Instant.now()));
                     exchangeRate.setSource("臺灣銀行");
 

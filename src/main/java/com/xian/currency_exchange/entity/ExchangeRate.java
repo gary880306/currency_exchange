@@ -12,11 +12,19 @@ public class ExchangeRate {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String baseCurrency;
+
+    @Column(precision=10, scale=4)
     private BigDecimal buyRate;
+
+    @Column(precision=10, scale=4)
     private BigDecimal sellRate;
+
     private Timestamp lastUpdated;
+
     private String source;
+
     @Column(unique = true)
-    private String currencyCode;
+    private String targetCode;
 }

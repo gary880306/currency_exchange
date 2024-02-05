@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ch" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+    <h3>選擇基礎貨幣：</h3>
+    <select id="baseCurrencySelect">
+        <option value="TWD">TWD</option>
+    </select>
+    <input id="baseCurrencyInput" type="number">
+    <h3>選擇目標貨幣：</h3>
+    <select id="targetCurrencySelect">
+        <option value="TWD">TWD</option>
+    </select>
+    <input id="targetCurrencyInput" type="number" disabled>
+    <br/><br/>
+    <button id="convertButton">轉換</button>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="/js/main.js"></script>
+</body>
+</html>
